@@ -31,7 +31,43 @@ impl RpnCalculator {
     }
     // 計算関数
     pub fn eval(&self, formula: &str) -> i32 {
-        0
+        // 空白で区切る
+        let mut tokens = formula.split_whitespace().rev().collect::<Vec<_>>();
+        // 内部計算用の関数を呼び出す
+        self.eval_inner(&mut tokens)
+    }
+    // 内部計算関数
+    fn eval_inner(&self, tokens: &mut Vec<&str>) -> i32 {
+        // Vec型のインスタンスを生成
+        let mut stack = Vec::new();
+
+        while let Some(token) = tokens.pop() {
+            if let Ok(x) = token.parse::<i32>() {
+                stack.push(x);
+            } else {
+                let y = stack.pop().expect("invalid syntax");
+                let x = stack.pop().expect("invalid syntax");
+                // 四則演算用の記号であるかチェックする。
+                let res = match token {
+                    "+" => x + y,
+                    "-" => x - y,
+                    "*" => x * y,
+                    "/" => x / y,
+                    "%" => x % y,
+                    _ => panic!("invalid token"),
+                };
+                stack.push(res);
+            }
+            // この時点でのトークンとスタックの状態を出力
+            if self.0 {
+                println!("{:?} {:?}", tokens, stack);
+            }
+        }
+        if stack.len() == 1{
+            stack[0]
+        } else {
+            panic!("invalid syntax")
+        }
     }
 }
 
