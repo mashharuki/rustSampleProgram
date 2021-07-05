@@ -25,5 +25,19 @@ struct Opts {
  * メイン関数
  */
 fn main() {
-    
+    let opts = Opts::parse();
+    // 計算ロジックを追加する。
+    if let Some(path) = opts.furmula_file {
+        // ファイル名を取得する
+        let f = File::open(path).unwrap();
+        let reader = BufReader::new(f);
+        // 1行ずつファイルの内容を読み込む
+        for line in reader.lines() {
+            let line = line.unwrap();
+            println!("{}", line);
+        }
+    } else {
+        // ファイルを指定しなかった場合
+        println!("No file is specified");
+    }
 }
