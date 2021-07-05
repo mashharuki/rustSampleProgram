@@ -1,7 +1,7 @@
 // ライブラリをインポートする。
 use clap::Clap;
 use std::fs::File;
-use std::io::{ BufRead, BufReader };
+use std::io::{ BufRead, BufReader, stdin };
 
 #[derive(Clap, Debug)]
 #[clap(
@@ -21,6 +21,20 @@ struct Opts {
     furmula_file: Option<String>,
 }
 
+// 構造体RpnCalculator
+struct RpnCalculator(bool);
+
+// RpnCalculatorの関数を実装する。
+impl RpnCalculator {
+    pub fn new(verbose: bool) -> Self {
+        Self(verbose)
+    }
+    // 計算関数
+    pub fn eval(&self, formula: &str) -> i32 {
+        0
+    }
+}
+
 /**
  * メイン関数
  */
@@ -34,18 +48,25 @@ fn main() {
         // run 関数を呼び出す。
         run(reader, opts.verbose);
     } else {
-        // ファイルを指定しなかった場合
-        println!("No file is specified");
+        // 標準入力に対応する
+        let stdin = stdin();
+        // 入力をロックする。
+        let reader = stdin.lock();
+        // run関数を呼び出す。
+        run(reader, opts.verbose);
     }
 }
 
 /**
  * run関数
  */
-fn run(reader: BufReader<File>, verbose: bool) {
-     // 1行ずつファイルの内容を読み込む
-     for line in reader.lines() {
+fn run<R: BufRead>(reader: R, verbose: bool) {
+    // RpnCalculator型のインスタンスを生成
+    let calc = RpnCalculator::new(verbose);
+    // 1行ずつファイルの内容を読み込む
+    for line in reader.lines() {
         let line = line.unwrap();
+        let answer = calc.eval(&line);
         println!("{}", line);
     }
 }
