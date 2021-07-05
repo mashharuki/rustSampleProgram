@@ -31,13 +31,21 @@ fn main() {
         // ファイル名を取得する
         let f = File::open(path).unwrap();
         let reader = BufReader::new(f);
-        // 1行ずつファイルの内容を読み込む
-        for line in reader.lines() {
-            let line = line.unwrap();
-            println!("{}", line);
-        }
+        // run 関数を呼び出す。
+        run(reader, opts.verbose);
     } else {
         // ファイルを指定しなかった場合
         println!("No file is specified");
+    }
+}
+
+/**
+ * run関数
+ */
+fn run(reader: BufReader<File>, verbose: bool) {
+     // 1行ずつファイルの内容を読み込む
+     for line in reader.lines() {
+        let line = line.unwrap();
+        println!("{}", line);
     }
 }
