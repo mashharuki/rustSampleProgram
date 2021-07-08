@@ -128,4 +128,12 @@ mod tests {
         assert_eq!(calc.eval("2 3 /"), 0);
         assert_eq!(calc.eval("2 3 %"), 2);
     }
+
+    #[test]
+    #[should_panic]
+    fn test_ng() {
+        // RpnCalculator型の変数を用意する。
+        let calc = RpnCalculator::new(false);
+        calc.eval("1 1 ^");
+    }
 }
