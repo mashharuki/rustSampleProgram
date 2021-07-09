@@ -1,7 +1,22 @@
+use std::fmt;
+
 // 列挙型変数MyErrorを用意する。
 enum MyError {
     Io(std::io::Error),
     Num(std::num::ParseIntError),
+}
+
+/**
+ * MyErrorにDisplayトレイトを適用させる。
+ */
+impl fmt::Display for MyError {
+    // fmt関数
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            MyError::Io(cause) => write!(f, "I/O Error: {}", cause),
+            MyError::Num(cause) => write!(f, "Parse Error {}", cause),
+        }
+    }
 }
 
 /**
