@@ -1,10 +1,10 @@
 /**
  * テキストファイルから数字を取得する関数
  */
-fn get_int_from_file() -> Result<i32, String>{
+fn get_int_from_file() -> Result<i32, String> {
     // ファイルの読み込む
     let path = "number.txt";
-    let num_str = std::fs::read_to_string(path).map(|e| e.to_string())?;
+    let num_str = std::fs::read_to_string(path).map_err(|e| e.to_string())?;
 
     num_str
         .trim()  // 文字列の前後の空白を削除する。

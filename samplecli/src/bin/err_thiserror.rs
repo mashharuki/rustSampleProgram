@@ -1,4 +1,4 @@
-ues thiserror::Error;
+use thiserror::Error;
 
 // 列挙型変数MyErrorを用意する。
 #[derive(Error, Debug)]
@@ -12,7 +12,7 @@ enum MyError {
 /**
  * ファイルから数字を取得する関数
  */
-fn get_int_from_file() -> Result<i32> {
+fn get_int_from_file() -> Result<i32, MyError> {
     let path = "number.txt";
 
     let num_str = std::fs::read_to_string(path).map_err(|_| MyError::ReadError(path.into()))?;
